@@ -2,10 +2,12 @@
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace MovieCharactersAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class initialDb : Migration
+    public partial class Seed : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -76,17 +78,64 @@ namespace MovieCharactersAPI.Migrations
                 {
                     table.PrimaryKey("PK_CharacterMovie", x => new { x.CharactersId, x.MoviesId });
                     table.ForeignKey(
-                        name: "FK_CharacterMovie_Characters_CharactersId",
-                        column: x => x.CharactersId,
+                        name: "FK_CharacterMovie_Characters_MoviesId",
+                        column: x => x.MoviesId,
                         principalTable: "Characters",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CharacterMovie_Movies_MoviesId",
-                        column: x => x.MoviesId,
+                        name: "FK_CharacterMovie_Movies_CharactersId",
+                        column: x => x.CharactersId,
                         principalTable: "Movies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Characters",
+                columns: new[] { "Id", "Alias", "Gender", "Name", "Picture" },
+                values: new object[,]
+                {
+                    { 1, "", "Male", "Leonardo Di Caprio", "Google.com" },
+                    { 2, "", "Male", "Robert De Niro", "Google.com" },
+                    { 3, "", "Female", "Sandra Bullock", "Google.com" },
+                    { 4, "", "Male", "Adam Sandler", "Google.com" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Franchises",
+                columns: new[] { "Id", "Description", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Disney", "Disney" },
+                    { 2, "MCU", "MCU" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "CharacterMovie",
+                columns: new[] { "CharactersId", "MoviesId" },
+                values: new object[] { 4, 3 });
+
+            migrationBuilder.InsertData(
+                table: "Movies",
+                columns: new[] { "Id", "Director", "FranchiseId", "Genre", "MovieTitle", "Picture", "ReleaseYear", "Trailer" },
+                values: new object[,]
+                {
+                    { 1, "Adam Sandler", 1, "Comedy", "Happy Gilmore", "google.com", 1932, "Youtube.com" },
+                    { 2, "??", 1, "Thriller", "Inception", "google.com", 1932, "Youtube.com" },
+                    { 3, "James Beanie", 2, "Action", "The Irishman", "google.com", 1932, "Youtube.com" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "CharacterMovie",
+                columns: new[] { "CharactersId", "MoviesId" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 1, 2 },
+                    { 2, 2 },
+                    { 3, 1 },
+                    { 3, 3 }
                 });
 
             migrationBuilder.CreateIndex(
