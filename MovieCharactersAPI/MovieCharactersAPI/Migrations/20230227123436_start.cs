@@ -7,7 +7,7 @@
 namespace MovieCharactersAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class Seed : Migration
+    public partial class start : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -78,14 +78,14 @@ namespace MovieCharactersAPI.Migrations
                 {
                     table.PrimaryKey("PK_CharacterMovie", x => new { x.CharactersId, x.MoviesId });
                     table.ForeignKey(
-                        name: "FK_CharacterMovie_Characters_MoviesId",
-                        column: x => x.MoviesId,
+                        name: "FK_CharacterMovie_Characters_CharactersId",
+                        column: x => x.CharactersId,
                         principalTable: "Characters",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CharacterMovie_Movies_CharactersId",
-                        column: x => x.CharactersId,
+                        name: "FK_CharacterMovie_Movies_MoviesId",
+                        column: x => x.MoviesId,
                         principalTable: "Movies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -112,11 +112,6 @@ namespace MovieCharactersAPI.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "CharacterMovie",
-                columns: new[] { "CharactersId", "MoviesId" },
-                values: new object[] { 4, 3 });
-
-            migrationBuilder.InsertData(
                 table: "Movies",
                 columns: new[] { "Id", "Director", "FranchiseId", "Genre", "MovieTitle", "Picture", "ReleaseYear", "Trailer" },
                 values: new object[,]
@@ -133,9 +128,10 @@ namespace MovieCharactersAPI.Migrations
                 {
                     { 1, 1 },
                     { 1, 2 },
-                    { 2, 2 },
-                    { 3, 1 },
-                    { 3, 3 }
+                    { 2, 3 },
+                    { 3, 3 },
+                    { 4, 1 },
+                    { 4, 2 }
                 });
 
             migrationBuilder.CreateIndex(

@@ -49,7 +49,7 @@ namespace MovieCharactersAPI.Migrations
                         new
                         {
                             CharactersId = 2,
-                            MoviesId = 2
+                            MoviesId = 3
                         },
                         new
                         {
@@ -59,12 +59,12 @@ namespace MovieCharactersAPI.Migrations
                         new
                         {
                             CharactersId = 4,
-                            MoviesId = 3
+                            MoviesId = 1
                         },
                         new
                         {
-                            CharactersId = 3,
-                            MoviesId = 1
+                            CharactersId = 4,
+                            MoviesId = 2
                         });
                 });
 
@@ -255,13 +255,13 @@ namespace MovieCharactersAPI.Migrations
 
             modelBuilder.Entity("CharacterMovie", b =>
                 {
-                    b.HasOne("MovieCharactersAPI.Models.Movie", null)
+                    b.HasOne("MovieCharactersAPI.Models.Character", null)
                         .WithMany()
                         .HasForeignKey("CharactersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MovieCharactersAPI.Models.Character", null)
+                    b.HasOne("MovieCharactersAPI.Models.Movie", null)
                         .WithMany()
                         .HasForeignKey("MoviesId")
                         .OnDelete(DeleteBehavior.Cascade)
