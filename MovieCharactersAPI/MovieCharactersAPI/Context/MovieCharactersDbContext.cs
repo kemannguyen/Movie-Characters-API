@@ -31,25 +31,25 @@ namespace MovieCharactersAPI.Context
               new Movie { Id = 3, MovieTitle = "The Irishman", Genre = "Action", ReleaseYear = 1932, Director = "James Beanie", Picture = "google.com", Trailer = "Youtube.com", FranchiseId = 2 }
               );
 
-            modelBuilder.Entity<Character>()
-                .HasMany(p => p.Movies)
-                .WithMany(m => m.Characters)
-                .UsingEntity<Dictionary<string, object>>(
-                    "CharacterMovie",
-                    r => r.HasOne<Movie>().WithMany().HasForeignKey("CharactersId"),
-                    l => l.HasOne<Character>().WithMany().HasForeignKey("MoviesId"),
-                    je =>
-                    {
-                        je.HasKey("CharactersId", "MoviesId");
-                        je.HasData(
-                            new { CharactersId = 1, MoviesId = 1 },
-                            new { CharactersId = 1, MoviesId = 2 },
-                            new { CharactersId = 2, MoviesId = 2},
-                            new { CharactersId = 3, MoviesId = 3 },
-                            new { CharactersId = 4, MoviesId = 3},
-                            new { CharactersId = 3, MoviesId = 1}
-                        );
-                    });
+            modelBuilder.Entity<Movie>()
+                 .HasMany(p => p.Characters)
+                 .WithMany(m => m.Movies)
+                 .UsingEntity<Dictionary<string, object>>(
+                     "CharacterMovie",
+                     r => r.HasOne<Character>().WithMany().HasForeignKey("CharactersId"),
+                     l => l.HasOne<Movie>().WithMany().HasForeignKey("MoviesId"),
+                     je =>
+                     {
+                         je.HasKey("CharactersId", "MoviesId");
+                         je.HasData(
+                             new { CharactersId = 1, MoviesId = 1 },
+                             new { CharactersId = 1, MoviesId = 2 },
+                             new { CharactersId = 2, MoviesId = 3 },
+                             new { CharactersId = 3, MoviesId = 3 },
+                             new { CharactersId = 4, MoviesId = 1 },
+                             new { CharactersId = 4, MoviesId = 2 }
+                         );
+                     });
 
 
         }
