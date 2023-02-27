@@ -4,7 +4,6 @@ using MovieCharactersAPI.Models;
 
 namespace MovieCharactersAPI.Services
 {
-    // logik
     public class FranchisesService : IFranchiseService
     {
         private readonly MovieCharactersDbContext _context; 

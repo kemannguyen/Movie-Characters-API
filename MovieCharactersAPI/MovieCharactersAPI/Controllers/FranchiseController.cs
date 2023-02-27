@@ -5,9 +5,6 @@ using System.Net.Mime;
 
 namespace MovieCharactersAPI.Controllers
 {
-    // autmomappern ska vara här
-    // tar emot requst kollar i services gör det som finns där och sen "mappar" 
-
     [Route("api/v1/[controller]")]
     [ApiConventionType(typeof(DefaultApiConventions))]
     [Produces(MediaTypeNames.Application.Json)]
@@ -54,19 +51,22 @@ namespace MovieCharactersAPI.Controllers
             }
         }
 
-        // POST: api/Franchises
         /// <summary>
         /// Add a new franchise to the database 
         /// </summary>
-        /// <param name="franchise"></param>
-        /// <returns></returns>
+        /// <param name="franchise">Franchises object to add</param>
+        /// <returns>The franchises resource </returns>
         [HttpPost]
         public async Task<ActionResult<Franchise>> PostFranchise(Franchise franchise)
         {
             return CreatedAtAction("GetFranchises", new { id = franchise.Id }, await _franchiseService.AddFranchise(franchise));
         }
 
-        // DELETE: api/Franchises/2
+        /// <summary>
+        /// Delete a specific resource from database based on a unique identifier
+        /// </summary>
+        /// <param name="Id">The id of the resource to delete</param>
+        /// <returns></returns>
         [HttpDelete("Id")]
         public async Task<IActionResult> DeleteFranchise(int Id)
         {
@@ -85,7 +85,13 @@ namespace MovieCharactersAPI.Controllers
             return NoContent();
         }
 
-        // PUT: api/Franchises/2
+        
+        /// <summary>
+        /// update a resource
+        /// </summary>
+        /// <param name="id">the id for the resource to update</param>
+        /// <param name="franchise">Check if it's same as the one you are updating</param>
+        /// <returns></returns>
         [HttpPut("Id")]
         public async Task<IActionResult> PutFranchises(int id, Franchise franchise)
         {
