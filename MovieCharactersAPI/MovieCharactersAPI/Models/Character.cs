@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
+using System.ComponentModel.DataAnnotations;
 
 namespace MovieCharactersAPI.Models
 {
@@ -17,7 +18,6 @@ namespace MovieCharactersAPI.Models
         
         [MaxLength(100)]
         public string Picture { get; set; }
-
         public ICollection<Movie> Movies { get; set;}
     }
 }

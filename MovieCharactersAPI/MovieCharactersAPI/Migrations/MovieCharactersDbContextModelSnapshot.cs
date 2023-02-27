@@ -34,6 +34,38 @@ namespace MovieCharactersAPI.Migrations
                     b.HasIndex("MoviesId");
 
                     b.ToTable("CharacterMovie");
+
+                    b.HasData(
+                        new
+                        {
+                            CharactersId = 1,
+                            MoviesId = 1
+                        },
+                        new
+                        {
+                            CharactersId = 1,
+                            MoviesId = 2
+                        },
+                        new
+                        {
+                            CharactersId = 2,
+                            MoviesId = 2
+                        },
+                        new
+                        {
+                            CharactersId = 3,
+                            MoviesId = 3
+                        },
+                        new
+                        {
+                            CharactersId = 4,
+                            MoviesId = 3
+                        },
+                        new
+                        {
+                            CharactersId = 3,
+                            MoviesId = 1
+                        });
                 });
 
             modelBuilder.Entity("MovieCharactersAPI.Models.Character", b =>
@@ -67,6 +99,40 @@ namespace MovieCharactersAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Characters");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Alias = "",
+                            Gender = "Male",
+                            Name = "Leonardo Di Caprio",
+                            Picture = "Google.com"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Alias = "",
+                            Gender = "Male",
+                            Name = "Robert De Niro",
+                            Picture = "Google.com"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Alias = "",
+                            Gender = "Female",
+                            Name = "Sandra Bullock",
+                            Picture = "Google.com"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Alias = "",
+                            Gender = "Male",
+                            Name = "Adam Sandler",
+                            Picture = "Google.com"
+                        });
                 });
 
             modelBuilder.Entity("MovieCharactersAPI.Models.Franchise", b =>
@@ -90,6 +156,20 @@ namespace MovieCharactersAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Franchises");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Disney",
+                            Name = "Disney"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "MCU",
+                            Name = "MCU"
+                        });
                 });
 
             modelBuilder.Entity("MovieCharactersAPI.Models.Movie", b =>
@@ -136,17 +216,52 @@ namespace MovieCharactersAPI.Migrations
                     b.HasIndex("FranchiseId");
 
                     b.ToTable("Movies");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Director = "Adam Sandler",
+                            FranchiseId = 1,
+                            Genre = "Comedy",
+                            MovieTitle = "Happy Gilmore",
+                            Picture = "google.com",
+                            ReleaseYear = 1932,
+                            Trailer = "Youtube.com"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Director = "??",
+                            FranchiseId = 1,
+                            Genre = "Thriller",
+                            MovieTitle = "Inception",
+                            Picture = "google.com",
+                            ReleaseYear = 1932,
+                            Trailer = "Youtube.com"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Director = "James Beanie",
+                            FranchiseId = 2,
+                            Genre = "Action",
+                            MovieTitle = "The Irishman",
+                            Picture = "google.com",
+                            ReleaseYear = 1932,
+                            Trailer = "Youtube.com"
+                        });
                 });
 
             modelBuilder.Entity("CharacterMovie", b =>
                 {
-                    b.HasOne("MovieCharactersAPI.Models.Character", null)
+                    b.HasOne("MovieCharactersAPI.Models.Movie", null)
                         .WithMany()
                         .HasForeignKey("CharactersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MovieCharactersAPI.Models.Movie", null)
+                    b.HasOne("MovieCharactersAPI.Models.Character", null)
                         .WithMany()
                         .HasForeignKey("MoviesId")
                         .OnDelete(DeleteBehavior.Cascade)
