@@ -34,6 +34,11 @@ namespace MovieCharactersAPI.Services
             return await _context.Characters.Include(x => x.Movies).ToListAsync();
         }
 
+        public Task<IEnumerable<Movie>> GetAllMovies(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Character> GetCharacterById(int id)
         {
             var character = await _context.Characters.Include(x => x.Movies).FirstOrDefaultAsync(x => x.Id == id);

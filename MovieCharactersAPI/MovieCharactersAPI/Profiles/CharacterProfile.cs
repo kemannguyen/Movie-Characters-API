@@ -13,6 +13,7 @@ namespace MovieCharactersAPI.Profiles
                 {
                     options.MapFrom(c => c.Movies.Select(m => $"api/v1/movie/{m.Id}").ToList());
                 });
+            CreateMap<CreateCharacterDTO, Character>();
         }
     }
 }

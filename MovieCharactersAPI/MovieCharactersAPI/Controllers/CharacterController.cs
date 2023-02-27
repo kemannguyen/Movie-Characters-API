@@ -30,7 +30,7 @@ namespace MovieCharactersAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<CharacterDTO>> GetCharacter(int id)
+        public async Task<ActionResult<CharacterDTO>> GetCharacterById(int id)
         {
             try
             {
@@ -46,9 +46,11 @@ namespace MovieCharactersAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CharacterDTO>> PostGuitar(Character character)
+        public async Task<ActionResult<CreateCharacterDTO>> CreateCharacter(CreateCharacterDTO createCharacterDTO)
         {
-            return CreatedAtAction("GetGuitar", new { id =character.Id }, _mapper.Map < Character, CharacterDTO > (await _characterService.AddCharacter(character)));
+            var character = _mapper.Map<Character>(createCharacterDTO);
+            await _characterService.AddCharacter(character);
+            return CreatedAtAction(nameof(GetCharacterById), new { id = character.Id }, character);
         }
 
         [HttpDelete("{id}")]
@@ -85,6 +87,19 @@ namespace MovieCharactersAPI.Controllers
 
             return NoContent();
         }
+
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<IEnumerable<Movie>>> GetCharacterMovies(int id)
+        //{
+        //    try
+        //    {
+        //        return Ok(await _characterService.GetAllMovies(id));
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        return NotFound(new ProblemDetails { Detail = ex.Message });
+        //    }
+        //}
 
     }
 }
