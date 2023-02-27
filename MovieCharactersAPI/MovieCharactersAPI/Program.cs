@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MovieCharactersAPI.Context;
+using MovieCharactersAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +14,7 @@ builder.Services.AddDbContext<MovieCharactersDbContext>(options => options.UseSq
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
+builder.Services.AddTransient<IMovieService, MovieService>();
 
 var app = builder.Build();
 
