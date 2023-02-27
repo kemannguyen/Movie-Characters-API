@@ -7,8 +7,8 @@ using System.Net.Mime;
 
 namespace MovieCharactersAPI.Controllers
 {
-    [Route("api/v1/[controller]")]
-    [ApiConventionType(typeof(DefaultApiConventions))]
+    [Route("/v1/[controller]")]
+    [ApiConvapientionType(typeof(DefaultApiConventions))]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [ApiController]
@@ -23,12 +23,21 @@ namespace MovieCharactersAPI.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Gets all characters entities
+        /// </summary>
+        /// <returns>All Characters</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CharacterDTO>>> GetCharacters()
         {
             return Ok(_mapper.Map<IEnumerable<CharacterDTO>>(await _characterService.GetAllCharacters()));
         }
 
+        /// <summary>
+        /// Gets character entity by Id
+        /// </summary>
+        /// <param name="id">Id of entity</param>
+        /// <returns>Character entity</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<CharacterDTO>> GetCharacterById(int id)
         {
@@ -45,6 +54,11 @@ namespace MovieCharactersAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Creates a character entity
+        /// </summary>
+        /// <param name="createCharacterDTO">Character to create</param>
+        /// <returns>Created character entity</returns>
         [HttpPost]
         public async Task<ActionResult<CreateCharacterDTO>> CreateCharacter(CreateCharacterDTO createCharacterDTO)
         {
@@ -52,6 +66,12 @@ namespace MovieCharactersAPI.Controllers
             await _characterService.AddCharacter(character);
             return CreatedAtAction(nameof(GetCharacterById), new { id = character.Id }, character);
         }
+
+        /// <summary>
+        /// Deletes a character entity
+        /// </summary>
+        /// <param name="id">Id of character</param>
+        /// <returns>No content or Not found message</returns>
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCharacter(int id)
@@ -67,6 +87,12 @@ namespace MovieCharactersAPI.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Updates a character entity
+        /// </summary>
+        /// <param name="id">Id of character</param>
+        /// <param name="character">Updated characters</param>
+        /// <returns>Updated character</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCharacter(int id, Character character)
         {
@@ -87,19 +113,6 @@ namespace MovieCharactersAPI.Controllers
 
             return NoContent();
         }
-
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<IEnumerable<Movie>>> GetCharacterMovies(int id)
-        //{
-        //    try
-        //    {
-        //        return Ok(await _characterService.GetAllMovies(id));
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        return NotFound(new ProblemDetails { Detail = ex.Message });
-        //    }
-        //}
 
     }
 }
