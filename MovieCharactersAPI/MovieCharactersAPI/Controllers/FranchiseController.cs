@@ -143,7 +143,7 @@ namespace MovieCharactersAPI.Controllers
         /// <param name="movieIds">Array of the movieId's to add</param>
         /// <returns></returns>
         [HttpPatch("{id}")]
-        public async Task<IActionResult> AddMovieToFranchase(int id, params int[] movieIds)
+        public async Task<IActionResult> AddMovieToFranchise(int id, params int[] movieIds)
         {
             try
             {
