@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using MovieCharactersAPI.Models;
+using MovieCharactersAPI.Models.DTOS;
 using MovieCharactersAPI.Services;
 using System.Net.Mime;
 
@@ -14,9 +16,11 @@ namespace MovieCharactersAPI.Controllers
     public class FranchiseController : ControllerBase
     {
         private readonly IFranchiseService _franchiseService;
-        public FranchiseController(IFranchiseService franchiseService) 
+        private readonly IMapper _mapper;
+        public FranchiseController(IFranchiseService franchiseService, IMapper mapper) 
         {
             _franchiseService = franchiseService;        
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -24,23 +28,24 @@ namespace MovieCharactersAPI.Controllers
         /// </summary>
         /// <returns>List of franchises</returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Franchise>>> GetFranchises()
+        public async Task<ActionResult<IEnumerable<FranchiseDTO>>> GetFranchises()
         {
-            return Ok(await _franchiseService.GetAllFranchises());
+            // return Ok(await _franchiseService.GetAllFranchises());
+            return Ok(_mapper.Map<IEnumerable<FranchiseDTO>>(await _franchiseService.GetAllFranchises()));
         }
 
-        // GET: api/franchises/2
         /// <summary>
         /// Get one specific franchise based on an unique identifier
         /// </summary>
         /// <param name="Id">Franchise id</param>
         /// <returns>A franchise resource</returns>
         [HttpGet("Id")]
-        public async Task<ActionResult<Franchise>> getFranchise(int Id)
+        public async Task<ActionResult<FranchiseDTO>> getFranchiseById(int Id)
         {
             try
             {
-                return await _franchiseService.GetFranchiseById(Id);
+               // return await _franchiseService.GetFranchiseById(Id);
+               return Ok(_mapper.Map<FranchiseDTO>(await _franchiseService.GetFranchiseById(Id)));
             }
             catch (Exception ex)
             {
@@ -57,9 +62,13 @@ namespace MovieCharactersAPI.Controllers
         /// <param name="franchise">Franchises object to add</param>
         /// <returns>The franchises resource </returns>
         [HttpPost]
-        public async Task<ActionResult<Franchise>> PostFranchise(Franchise franchise)
+        public async Task<ActionResult<Franchise>> PostFranchise(CreateFranchaseDTO createFranchaseDTO)
         {
-            return CreatedAtAction("GetFranchises", new { id = franchise.Id }, await _franchiseService.AddFranchise(franchise));
+            //return CreatedAtAction("GetFranchises", new { id = franchise.Id }, await _franchiseService.AddFranchise(franchise));
+            var franchase = _mapper.Map<Franchise>(createFranchaseDTO);
+            await _franchiseService.AddFranchise(franchase);
+
+            return CreatedAtAction(nameof(getFranchiseById), new {id = franchase.Id}, franchase);
         }
 
         /// <summary>
