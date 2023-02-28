@@ -115,6 +115,13 @@ namespace MovieCharactersAPI.Controllers
             return NoContent();
         }
 
+
+        /// <summary>
+        /// Adds a movie entity to a character entity
+        /// </summary>
+        /// <param name="id">Character Id</param>
+        /// <param name="movieId">Movie Id</param>
+        /// <returns>Updated Character</returns>
         [HttpPatch("{id}")]
         public async Task<ActionResult<CharacterDTO>> AddMovieToCharacter(int id, int movieId)
         {
