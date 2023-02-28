@@ -52,11 +52,17 @@ namespace MovieCharactersAPI.Services
 
         public async Task DeleteFranchise(int id)
         {
-            var franchise = await _context.Franchises.FindAsync(id);
+            var franchise = await _context.Franchises.Include(x => x.Movies).FirstOrDefaultAsync(x => x.Id == id);
 
             if (franchise == null) 
             {
                 throw new Exception();
+            }
+
+            foreach (var movie in franchise.Movies) 
+            {
+                movie.Franchise = null;
+                movie.FranchiseId = null;
             }
 
             _context.Franchises.Remove(franchise);
