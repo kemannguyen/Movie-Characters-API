@@ -101,16 +101,11 @@ namespace MovieCharactersAPI.Controllers
         /// <param name="franchise">Check if it's same as the one you are updating</param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFranchises(int id, Franchise franchise)
+        public async Task<IActionResult> PutFranchises(int id, CreateFranchaseDTO franchise)
         {
-            if (id != franchise.Id)
-            {
-                return BadRequest();
-            }
-
             try
             {
-                await _franchiseService.UpdateFranchise(franchise);
+                await _franchiseService.UpdateFranchise(_mapper.Map<Franchise>(franchise));
             }
             catch (Exception ex) 
             { 
