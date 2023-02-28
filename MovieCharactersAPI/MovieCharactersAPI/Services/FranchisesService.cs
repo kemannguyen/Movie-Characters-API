@@ -21,6 +21,35 @@ namespace MovieCharactersAPI.Services
             return franchise;
         }
 
+        public async Task<Franchise> AddMovieToFranchise(int id, params int[] movieIds)
+        {
+            var franchise = await _context.Franchises.Include(x => x.Movies).FirstOrDefaultAsync(x => x.Id == id);
+            var movies = new List<Movie>();
+
+            if (franchise == null) 
+            {
+                throw new Exception();
+            }
+
+            foreach (int movieId in movieIds)
+            {
+                var movie = await _context.Movies.FindAsync(movieId);
+                if(movie == null || franchise.Movies.Contains(movie))
+                {
+                    throw new Exception();
+                }
+                movies.Add(movie);
+            }
+
+            foreach(Movie movie in movies)
+            {
+                franchise.Movies.Add(movie);
+                await _context.SaveChangesAsync();
+            }
+
+            return franchise;
+        }
+
         public async Task DeleteFranchise(int id)
         {
             var franchise = await _context.Franchises.FindAsync(id);

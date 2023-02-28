@@ -123,5 +123,24 @@ namespace MovieCharactersAPI.Controllers
 
             return NoContent();
         }
+
+        [HttpPut("id/updateMovies")]
+        public async Task<IActionResult> AdddMovieToFranchase(int Id, params int[] movieIds)
+        {
+
+            try
+            {
+                await _franchiseService.AddMovieToFranchise(Id, movieIds);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message,
+                });
+            }
+
+            return NoContent();
+        }
     }
 }

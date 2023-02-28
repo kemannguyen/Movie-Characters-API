@@ -37,5 +37,8 @@ namespace MovieCharactersAPI.Services
         /// <param name="id">The unique identifier</param>
         /// <returns></returns>
         Task DeleteFranchise(int id);
+
+
+        Task<Franchise> AddMovieToFranchise(int id, params int[] movieIds);
     }
 }
