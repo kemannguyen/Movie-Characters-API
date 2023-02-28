@@ -21,6 +21,23 @@ namespace MovieCharactersAPI.Services
             return character;
         }
 
+        public async Task<Character> AddMovieToCharacter(int id, int movieId)
+        {
+            var character = await GetCharacterById(id);
+            if (character is null)
+                throw new CharacterNotFoundException("Character not found");
+
+            var movie = await _context.Movies.Include(x => x.Characters).FirstOrDefaultAsync(x => x.Id == movieId);
+            if (movie is null)
+                throw new MovieNotFoundException("Movie not found");
+
+            character.Movies.Add(movie);
+            movie.Characters.Add(character);
+            await _context.SaveChangesAsync();
+
+            return character;
+        }
+
         public async Task DeleteCharacter(int id)
         {
             var character = await _context.Characters.FindAsync(id);
