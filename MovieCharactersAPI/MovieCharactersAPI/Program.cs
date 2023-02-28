@@ -12,11 +12,14 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<MovieCharactersDbContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
     ));
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddTransient<ICharacterService, CharacterService>();
 builder.Services.AddSwaggerGen();
+builder.Services.AddTransient<IFranchiseService, FranchisesService>();
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
 var app = builder.Build();
