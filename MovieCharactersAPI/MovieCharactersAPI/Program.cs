@@ -5,7 +5,7 @@ using MovieCharactersAPI.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers();
 
 
@@ -22,6 +22,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IFranchiseService, FranchisesService>();
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
+builder.Services.AddTransient<IMovieService, MovieService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
