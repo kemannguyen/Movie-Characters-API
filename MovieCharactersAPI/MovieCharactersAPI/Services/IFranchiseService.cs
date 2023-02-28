@@ -43,5 +43,8 @@ namespace MovieCharactersAPI.Services
 
         
         Task<IEnumerable<Movie>> GetAllMoviesInFranchise(int id);
+
+        Task<IEnumerable<Character>> GetAllCharactersInFranchise(int id);
+
     }
 }

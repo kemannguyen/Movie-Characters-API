@@ -60,6 +60,12 @@ namespace MovieCharactersAPI.Controllers
         {
             return Ok(_mapper.Map<IEnumerable<MovieDTO>>(await _franchiseService.GetAllMoviesInFranchise(id)));
         }
+
+        [HttpGet("{id}/characters")]
+        public async Task<ActionResult<IEnumerable<CharacterDTO>>> GetCharactersInFranchise(int id)
+        {
+            return Ok(_mapper.Map<IEnumerable<CharacterDTO>>(await _franchiseService.GetAllCharactersInFranchise(id)));
+        }
         /// <summary>
         /// Add a new franchise to the database 
         /// </summary>

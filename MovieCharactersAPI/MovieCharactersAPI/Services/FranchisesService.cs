@@ -6,7 +6,7 @@ namespace MovieCharactersAPI.Services
 {
     public class FranchisesService : IFranchiseService
     {
-        private readonly MovieCharactersDbContext _context; 
+        private readonly MovieCharactersDbContext _context;
 
         public FranchisesService(MovieCharactersDbContext context)
         {
@@ -26,7 +26,7 @@ namespace MovieCharactersAPI.Services
             var franchise = await _context.Franchises.Include(x => x.Movies).FirstOrDefaultAsync(x => x.Id == id);
             var movies = new List<Movie>();
 
-            if (franchise == null) 
+            if (franchise == null)
             {
                 throw new Exception("franchise not found");
             }
@@ -36,14 +36,14 @@ namespace MovieCharactersAPI.Services
                 var movie = await _context.Movies.Include(x => x.Characters).FirstAsync(x => movieId == x.Id);
                 if (franchise.Movies.Any(x => x.Id == movieId))
                     continue;
-                if(movie == null)
+                if (movie == null)
                 {
                     throw new Exception("movie not found");
                 }
                 movies.Add(movie);
             }
 
-            foreach(Movie movie in movies)
+            foreach (Movie movie in movies)
             {
                 franchise.Movies.Add(movie);
                 await _context.SaveChangesAsync();
@@ -56,12 +56,12 @@ namespace MovieCharactersAPI.Services
         {
             var franchise = await _context.Franchises.Include(x => x.Movies).FirstOrDefaultAsync(x => x.Id == id);
 
-            if (franchise == null) 
+            if (franchise == null)
             {
                 throw new Exception();
             }
 
-            foreach (var movie in franchise.Movies) 
+            foreach (var movie in franchise.Movies)
             {
                 movie.Franchise = null;
                 movie.FranchiseId = null;
@@ -69,6 +69,29 @@ namespace MovieCharactersAPI.Services
 
             _context.Franchises.Remove(franchise);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Character>> GetAllCharactersInFranchise(int id)
+        {
+            var foundFranchise = await _context.Franchises.Include(x => x.Movies).ThenInclude(x => x.Characters).FirstOrDefaultAsync(x => x.Id == id);
+
+            if (foundFranchise == null)
+            {
+                throw new Exception();
+            }
+            var characterList = new List<Character>();
+            foreach (Movie m in foundFranchise.Movies)
+            {
+                foreach (Character c in m.Characters)
+                {
+                    if (!characterList.Contains(c))
+                    {
+                        characterList.Add(c);
+                    }
+
+                }
+            }
+            return characterList;
         }
 
         public async Task<IEnumerable<Franchise>> GetAllFranchises()
@@ -92,7 +115,7 @@ namespace MovieCharactersAPI.Services
         {
             var franchise = await _context.Franchises.Include(x => x.Movies).FirstOrDefaultAsync(x => x.Id == id);
 
-            if(franchise == null)
+            if (franchise == null)
             {
                 throw new Exception();
             }
@@ -103,7 +126,7 @@ namespace MovieCharactersAPI.Services
         public async Task<Franchise> UpdateFranchise(Franchise franchise)
         {
             var foundFranchise = await _context.Franchises.AnyAsync(x => x.Id == franchise.Id);
-            if(!foundFranchise)
+            if (!foundFranchise)
             {
                 throw new Exception();
             }
