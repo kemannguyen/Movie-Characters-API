@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MovieCharactersAPI.Context;
 using MovieCharactersAPI.Models;
 
@@ -90,6 +91,18 @@ namespace MovieCharactersAPI.Services
             _context.Entry(foundMovie).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return foundMovie;
+        }
+
+        public async Task<IEnumerable<Character>> GetAllCharactersInMovie(int id)
+        {
+            var foundMovie = await _context.Movies.Include(x => x.Characters).FirstOrDefaultAsync(x => x.Id == id);
+
+            if(foundMovie == null)
+            {
+                throw new Exception();
+            }
+
+            return foundMovie.Characters.ToList();
         }
 
         //get all characters of a movie

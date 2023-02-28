@@ -45,6 +45,13 @@ namespace MovieCharactersAPI.Controllers
                 });
             }
         }
+
+        [HttpGet("{id}/characters")]
+        public async Task<ActionResult<IEnumerable<CharacterDTO>>> GetCharactersInMovie(int id)
+        {
+            return Ok(_mapper.Map<IEnumerable<CharacterDTO>>(await _movieService.GetAllCharactersInMovie(id)));
+        }
+
         [HttpPost]
         public async Task<ActionResult<Movie>> CreateMovie(CreateMovieDTO createMovieDTO)
         {
@@ -109,5 +116,7 @@ namespace MovieCharactersAPI.Controllers
             }
             return NoContent();
         }
+
+
     }
 }

@@ -10,5 +10,7 @@ namespace MovieCharactersAPI.Services
         Task DeleteMovie(int id);
         Task<Movie> UpdateMovie(Movie movie);
         Task<Movie> UpdateCharactersInMovie(int movieID, params int[] ids);
+
+        Task<IEnumerable<Character>> GetAllCharactersInMovie(int id);
     }
 }
