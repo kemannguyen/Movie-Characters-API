@@ -5,45 +5,59 @@ namespace MovieCharactersAPI.Services
     public interface IFranchiseService
     {
         /// <summary>
-        /// Get all resources 
+        /// Get all franchises 
         /// </summary>
-        /// <returns>A list of resources</returns>
+        /// <returns>A list of franchises</returns>
         Task<IEnumerable<Franchise>> GetAllFranchises();
 
         /// <summary>
-        /// Get a specific resource base of a unique identifier 
+        /// Get a specific franchise based of id
         /// </summary>
-        /// <param name="id">The unique identifier</param>
-        /// <returns>Returns that specific resource</returns>
+        /// <param name="id">The franchise id</param>
+        /// <returns>Returns that specific franchise</returns>
         Task<Franchise> GetFranchiseById(int id);
 
         /// <summary>
-        /// Add a resource
+        /// Add a franchise
         /// </summary>
         /// <param name="franchise">The object to add</param>
         /// <returns></returns>
         Task<Franchise> AddFranchise(Franchise franchise);
 
         /// <summary>
-        /// Update a resource 
+        /// Update a franchise 
         /// </summary>
-        /// <param name="franchise">The resource to update</param>
-        /// <returns>The updated resource</returns>
+        /// <param name="franchise">The franchise to update</param>
+        /// <returns>The updated franchise</returns>
         Task<Franchise> UpdateFranchise(Franchise franchise);
 
         /// <summary>
-        /// Delete a resource 
+        /// Delete a franchise 
         /// </summary>
-        /// <param name="id">The unique identifier</param>
+        /// <param name="id">The franchise id</param>
         /// <returns></returns>
         Task DeleteFranchise(int id);
 
-
+        /// <summary>
+        /// Add a movie to a franchise 
+        /// </summary>
+        /// <param name="id">Id of the franchise</param>
+        /// <param name="movieIds">An array of movieId's to add to the franchise</param>
+        /// <returns></returns>
         Task<Franchise> AddMovieToFranchise(int id, params int[] movieIds);
 
-        
+        /// <summary>
+        /// Get all movies connected to a franchise
+        /// </summary>
+        /// <param name="id">The franchise id</param>
+        /// <returns>A list of the movies</returns>
         Task<IEnumerable<Movie>> GetAllMoviesInFranchise(int id);
 
+        /// <summary>
+        /// Get all the characters connected to a franchise 
+        /// </summary>
+        /// <param name="id">The id of the franchise</param>
+        /// <returns>A list of all the characters</returns>
         Task<IEnumerable<Character>> GetAllCharactersInFranchise(int id);
 
     }

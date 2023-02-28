@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieCharactersAPI.Context;
+using MovieCharactersAPI.Exceptions;
 using MovieCharactersAPI.Models;
 
 namespace MovieCharactersAPI.Services
@@ -28,7 +29,7 @@ namespace MovieCharactersAPI.Services
 
             if (franchise == null)
             {
-                throw new Exception("franchise not found");
+                throw new FranchiseNotFoundException("franchise not found");
             }
 
             foreach (int movieId in movieIds)
@@ -38,7 +39,7 @@ namespace MovieCharactersAPI.Services
                     continue;
                 if (movie == null)
                 {
-                    throw new Exception("movie not found");
+                    throw new MovieNotFoundException("movie not found");
                 }
                 movies.Add(movie);
             }
@@ -58,7 +59,7 @@ namespace MovieCharactersAPI.Services
 
             if (franchise == null)
             {
-                throw new Exception();
+                throw new FranchiseNotFoundException("franchise not found");
             }
 
             foreach (var movie in franchise.Movies)
@@ -77,7 +78,7 @@ namespace MovieCharactersAPI.Services
 
             if (foundFranchise == null)
             {
-                throw new Exception();
+                throw new FranchiseNotFoundException("franchise not found");
             }
             var characterList = new List<Character>();
             foreach (Movie m in foundFranchise.Movies)
@@ -105,7 +106,7 @@ namespace MovieCharactersAPI.Services
 
             if (foundFranchise == null)
             {
-                throw new Exception();
+                throw new FranchiseNotFoundException("franchise not found");
             }
 
             return foundFranchise.Movies.ToList();
@@ -117,7 +118,7 @@ namespace MovieCharactersAPI.Services
 
             if (franchise == null)
             {
-                throw new Exception();
+                throw new FranchiseNotFoundException("franchise not found");
             }
 
             return franchise;
@@ -128,7 +129,7 @@ namespace MovieCharactersAPI.Services
             var foundFranchise = await _context.Franchises.AnyAsync(x => x.Id == franchise.Id);
             if (!foundFranchise)
             {
-                throw new Exception();
+                throw new FranchiseNotFoundException("franchise not found");
             }
             _context.Entry(franchise).State = EntityState.Modified;
             await _context.SaveChangesAsync();

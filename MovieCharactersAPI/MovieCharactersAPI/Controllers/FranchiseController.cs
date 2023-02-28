@@ -23,27 +23,25 @@ namespace MovieCharactersAPI.Controllers
         }
 
         /// <summary>
-        /// GEt all the Franchises resources
+        /// Get all the Franchises entities
         /// </summary>
         /// <returns>List of franchises</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FranchiseDTO>>> GetFranchises()
         {
-            // return Ok(await _franchiseService.GetAllFranchises());
             return Ok(_mapper.Map<IEnumerable<FranchiseDTO>>(await _franchiseService.GetAllFranchises()));
         }
 
         /// <summary>
-        /// Get one specific franchise based on an unique identifier
+        /// Get franchise entity by id
         /// </summary>
-        /// <param name="Id">Franchise id</param>
+        /// <param name="id">Franchise id</param>
         /// <returns>A franchise resource</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<FranchiseDTO>> getFranchiseById(int id)
         {
             try
             {
-               // return await _franchiseService.GetFranchiseById(Id);
                return Ok(_mapper.Map<FranchiseDTO>(await _franchiseService.GetFranchiseById(id)));
             }
             catch (Exception ex)
@@ -55,26 +53,35 @@ namespace MovieCharactersAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get all movies entities that are connected to a specific franchise entity. 
+        /// </summary>
+        /// <param name="id">Franchise id</param>
+        /// <returns>A list of all movies in the franchise</returns>
         [HttpGet("{id}/movies")]
         public async Task<ActionResult<IEnumerable<MovieDTO>>> GetCharactersInMovie(int id)
         {
             return Ok(_mapper.Map<IEnumerable<MovieDTO>>(await _franchiseService.GetAllMoviesInFranchise(id)));
         }
 
+        /// <summary>
+        /// Get all characters that are connected to a specific franchise entity
+        /// </summary>
+        /// <param name="id">Franchise id</param>
+        /// <returns>A list of all characters in the franchise</returns>
         [HttpGet("{id}/characters")]
         public async Task<ActionResult<IEnumerable<CharacterDTO>>> GetCharactersInFranchise(int id)
         {
             return Ok(_mapper.Map<IEnumerable<CharacterDTO>>(await _franchiseService.GetAllCharactersInFranchise(id)));
         }
         /// <summary>
-        /// Add a new franchise to the database 
+        /// Create a new franchise entity 
         /// </summary>
-        /// <param name="franchise">Franchises object to add</param>
-        /// <returns>The franchises resource </returns>
+        /// <param name="createFranchaseDTO">Franchise object to add</param>
+        /// <returns>The franchise resource</returns>
         [HttpPost]
         public async Task<ActionResult<Franchise>> PostFranchise(CreateFranchaseDTO createFranchaseDTO)
         {
-            //return CreatedAtAction("GetFranchises", new { id = franchise.Id }, await _franchiseService.AddFranchise(franchise));
             var franchase = _mapper.Map<Franchise>(createFranchaseDTO);
             await _franchiseService.AddFranchise(franchase);
 
@@ -82,9 +89,9 @@ namespace MovieCharactersAPI.Controllers
         }
 
         /// <summary>
-        /// Delete a specific resource from database based on a unique identifier
+        /// Delete a specific franchise entity based on id
         /// </summary>
-        /// <param name="Id">The id of the resource to delete</param>
+        /// <param name="id">The id of the resource to delete</param>
         /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFranchise(int id)
@@ -106,10 +113,10 @@ namespace MovieCharactersAPI.Controllers
 
         
         /// <summary>
-        /// update a resource
+        /// Update a franchise entity
         /// </summary>
-        /// <param name="id">the id for the resource to update</param>
-        /// <param name="franchise">Check if it's same as the one you are updating</param>
+        /// <param name="id">The id for the franchise</param>
+        /// <param name="franchise">The values to update</param>
         /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFranchises(int id, CreateFranchaseDTO franchise)
@@ -128,9 +135,15 @@ namespace MovieCharactersAPI.Controllers
 
             return NoContent();
         }
-
+        
+        /// <summary>
+        /// Add movie to the franchise entity.
+        /// </summary>
+        /// <param name="id">franchise id</param>
+        /// <param name="movieIds">Array of the movieId's to add</param>
+        /// <returns></returns>
         [HttpPatch("{id}")]
-        public async Task<IActionResult> AdddMovieToFranchase(int id, params int[] movieIds)
+        public async Task<IActionResult> AddMovieToFranchise(int id, params int[] movieIds)
         {
             try
             {
