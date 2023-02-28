@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieCharactersAPI.Context;
+using MovieCharactersAPI.Exceptions;
 using MovieCharactersAPI.Models;
 
 namespace MovieCharactersAPI.Services
@@ -24,7 +25,7 @@ namespace MovieCharactersAPI.Services
         {
             var character = await _context.Characters.FindAsync(id);
             if (character is null)
-                throw new Exception("Character Not Found");
+                throw new CharacterNotFoundException("Character Not Found");
             _context.Characters.Remove(character);
             await _context.SaveChangesAsync();
         }
@@ -34,16 +35,11 @@ namespace MovieCharactersAPI.Services
             return await _context.Characters.Include(x => x.Movies).ToListAsync();
         }
 
-        public Task<IEnumerable<Movie>> GetAllMovies(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<Character> GetCharacterById(int id)
         {
             var character = await _context.Characters.Include(x => x.Movies).FirstOrDefaultAsync(x => x.Id == id);
             if (character is null)
-                throw new Exception("Character Not Found");
+                throw new CharacterNotFoundException("Character Not Found");
             return character;
         }
 
@@ -51,7 +47,7 @@ namespace MovieCharactersAPI.Services
         {
             var foundCharacter = await _context.Characters.AnyAsync(x => x.Id == character.Id);
             if (!foundCharacter)
-                throw new Exception("Character Not Found");
+                throw new CharacterNotFoundException("Character Not Found");
             _context.Entry(character).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return character;

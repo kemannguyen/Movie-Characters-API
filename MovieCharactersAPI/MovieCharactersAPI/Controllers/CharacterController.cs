@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using MovieCharactersAPI.Exceptions;
 using MovieCharactersAPI.Models;
 using MovieCharactersAPI.Models.DTOS;
 using MovieCharactersAPI.Services;
@@ -45,7 +46,7 @@ namespace MovieCharactersAPI.Controllers
             {
                 return _mapper.Map<CharacterDTO>(await _characterService.GetCharacterById(id));
             }
-            catch(Exception ex)
+            catch(CharacterNotFoundException ex)
             {
                 return NotFound(new ProblemDetails
                 {
@@ -80,7 +81,7 @@ namespace MovieCharactersAPI.Controllers
             {
                 await _characterService.DeleteCharacter(id);
             }
-            catch(Exception ex)
+            catch(CharacterNotFoundException ex)
             {
                 return NotFound(new ProblemDetails { Detail = ex.Message });
             }
@@ -103,7 +104,7 @@ namespace MovieCharactersAPI.Controllers
             {
                 await _characterService.UpdateCharacter(character);
             }
-            catch(Exception ex)
+            catch(CharacterNotFoundException ex)
             {
                 return NotFound(new ProblemDetails
                 {
