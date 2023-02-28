@@ -8,7 +8,7 @@ using System.Net.Mime;
 namespace MovieCharactersAPI.Controllers
 {
     [Route("/v1/[controller]")]
-    [ApiConvapientionType(typeof(DefaultApiConventions))]
+    [ApiConventionType(typeof(DefaultApiConventions))]
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [ApiController]
