@@ -76,6 +76,18 @@ namespace MovieCharactersAPI.Services
             return await _context.Franchises.Include(x => x.Movies).ToListAsync();
         }
 
+        public async Task<IEnumerable<Movie>> GetAllMoviesInFranchise(int id)
+        {
+            var foundFranchise = await _context.Franchises.Include(x => x.Movies).FirstOrDefaultAsync(x => x.Id == id);
+
+            if (foundFranchise == null)
+            {
+                throw new Exception();
+            }
+
+            return foundFranchise.Movies.ToList();
+        }
+
         public async Task<Franchise> GetFranchiseById(int id)
         {
             var franchise = await _context.Franchises.Include(x => x.Movies).FirstOrDefaultAsync(x => x.Id == id);

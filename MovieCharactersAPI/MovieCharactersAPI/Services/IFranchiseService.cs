@@ -40,5 +40,8 @@ namespace MovieCharactersAPI.Services
 
 
         Task<Franchise> AddMovieToFranchise(int id, params int[] movieIds);
+
+        
+        Task<IEnumerable<Movie>> GetAllMoviesInFranchise(int id);
     }
 }
