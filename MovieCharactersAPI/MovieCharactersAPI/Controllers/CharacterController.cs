@@ -115,5 +115,21 @@ namespace MovieCharactersAPI.Controllers
             return NoContent();
         }
 
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<CharacterDTO>> AddMovieToCharacter(int id, int movieId)
+        {
+            try
+            {
+                return Ok(_mapper.Map<CharacterDTO>(await _characterService.AddMovieToCharacter(id, movieId)));
+            }
+            catch(Exception ex)
+            {
+                return NotFound(new ProblemDetails
+                {
+                    Detail = ex.Message
+                });
+            }
+        }
+
     }
 }

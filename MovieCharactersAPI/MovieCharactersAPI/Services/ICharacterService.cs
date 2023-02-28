@@ -37,5 +37,13 @@ namespace MovieCharactersAPI.Services
         /// <param name="character">Character to add</param>
         /// <returns></returns>
         Task<Character> AddCharacter(Character character);
+
+        /// <summary>
+        /// Adds an existing movie to the character, and the character to the movie.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="movieId"></param>
+        /// <returns></returns>
+        Task<Character> AddMovieToCharacter(int id, int movieId);
     }
 }
