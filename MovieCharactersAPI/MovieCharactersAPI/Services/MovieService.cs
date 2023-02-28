@@ -12,9 +12,28 @@ namespace MovieCharactersAPI.Services
         {
             _context = context;
         }
+        
+
+        public async Task<IEnumerable<Movie>> GetAllMovies()
+        {
+            return await _context.Movies.Include(x => x.Franchise).Include(x => x.Characters).ToListAsync();
+        }
+
+        public async Task<Movie> GetMovieById(int id)
+        {
+            var movie = await _context.Movies.Include(x => x.Franchise).Include(x=> x.Characters).FirstOrDefaultAsync(x => x.Id == id);
+            if (movie == null)
+            {
+                throw new Exception("not found" + id);
+            }
+            //var franchise = await _context.Franchises.FindAsync(movie.FranchiseId);
+            
+            return movie;
+        }
+        
         public async Task<Movie> AddMovie(Movie movie)
         {
-            _context.Movies.Add(movie);
+            await _context.Movies.AddAsync(movie);
             await _context.SaveChangesAsync();
 
             return movie;
@@ -32,22 +51,6 @@ namespace MovieCharactersAPI.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Movie>> GetAllMovies()
-        {
-            return await _context.Movies.ToListAsync();
-        }
-
-        public async Task<Movie> GetMovieById(int id)
-        {
-            var movie = await _context.Movies.FindAsync(id);
-            if(movie == null)
-            {
-                throw new Exception("not found" + id);
-            }
-
-            return movie;
-        }
-
         public async Task<Movie> UpdateMovie(Movie movie)
         {
             var foundMovie = await _context.Movies.AnyAsync(x => x.Id == movie.Id);
@@ -60,18 +63,35 @@ namespace MovieCharactersAPI.Services
             return movie;
         }
 
-        public async Task<Movie> UpdateCharactersInMovie(Movie movie, ICollection<Character> characters)
+        //also needs to change characterMovie table
+        public async Task<Movie> UpdateCharactersInMovie(int movieId, params int [] ids)
         {
-            var foundMovie = await _context.Movies.AnyAsync(x => x.Id==movie.Id);
-            if(!foundMovie)
+            var foundMovie = await _context.Movies.FindAsync(movieId);
+            if(foundMovie == null)
             {
-                throw new Exception("not found" + movie.Id);
+                throw new Exception("not found" + movieId);
             }
-            //updating the characters?
-            movie.Characters = characters;
-            _context.Entry(movie).State = EntityState.Modified;
+            var includedCharacters = new List<Character>();
+            foreach(var i in ids)
+            {
+                var tempChar = await _context.Characters.FindAsync(i);
+                if (tempChar != null)
+                {
+                    includedCharacters.Add(tempChar);
+                }
+                else
+                {
+                    throw new Exception("not found" + i);
+                }
+            }
+
+            foundMovie.Characters= includedCharacters;
+
+            _context.Entry(foundMovie).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            return movie;
+            return foundMovie;
         }
+
+        //get all characters of a movie
     }
 }

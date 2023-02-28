@@ -9,6 +9,6 @@ namespace MovieCharactersAPI.Services
         Task<Movie> AddMovie(Movie movie);
         Task DeleteMovie(int id);
         Task<Movie> UpdateMovie(Movie movie);
-        Task<Movie> UpdateCharactersInMovie(Movie movie, ICollection<Character> characters);
+        Task<Movie> UpdateCharactersInMovie(int movieID, params int[] ids);
     }
 }
