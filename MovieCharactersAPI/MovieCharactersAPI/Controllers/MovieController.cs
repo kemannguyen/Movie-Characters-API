@@ -20,7 +20,11 @@ namespace MovieCharactersAPI.Controllers
             _movieService = movieService;
             _mapper = mapper;
         }
-        // GET: api/Guitars
+
+        /// <summary>
+        /// get all movies
+        /// </summary>
+        /// <returns> all movies </returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
         {
@@ -28,14 +32,17 @@ namespace MovieCharactersAPI.Controllers
             //return Ok(await _movieService.GetAllMovies());
         }
 
-        // GET: api/Guitars/5
+        /// <summary>
+        /// get a movie 
+        /// </summary>
+        /// <param name="id"> id of movie </param>
+        /// <returns> specific movie </returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Movie>> GetMovie(int id)
         {
             try
             {
                 return Ok(_mapper.Map<MovieDTO>(await _movieService.GetMovieById(id)));
-                //return await _movieService.GetMovieById(id);
             }
             catch (Exception ex)
             {
@@ -46,12 +53,22 @@ namespace MovieCharactersAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// Get all characters of a movie 
+        /// </summary>
+        /// <param name="id"> id of the movie </param>
+        /// <returns> all characters of specific movie </returns>
         [HttpGet("{id}/characters")]
         public async Task<ActionResult<IEnumerable<CharacterDTO>>> GetCharactersInMovie(int id)
         {
             return Ok(_mapper.Map<IEnumerable<CharacterDTO>>(await _movieService.GetAllCharactersInMovie(id)));
         }
 
+        /// <summary>
+        /// Adds a new movie
+        /// </summary>
+        /// <param name="createMovieDTO"> input of new movie </param>
+        /// <returns> movie </returns>
         [HttpPost]
         public async Task<ActionResult<Movie>> CreateMovie(CreateMovieDTO createMovieDTO)
         {
@@ -60,6 +77,11 @@ namespace MovieCharactersAPI.Controllers
             return CreatedAtAction(nameof(GetMovie), new { id = movie.Id }, movie);
         }
 
+        /// <summary>
+        /// deletes a movie based on id
+        /// </summary>
+        /// <param name="id"> movie id </param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<Movie>> DeleteMovie(int id)
         {
@@ -77,13 +99,18 @@ namespace MovieCharactersAPI.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Add character to a movie
+        /// </summary>
+        /// <param name="movieId"> id of movie </param>
+        /// <param name="ids"> id of characters </param>
+        /// <returns></returns>
         [HttpPatch]
-        public async Task<ActionResult<Movie>> UpdateCharactersInMovie(int movieId, params int[] ids)
+        public async Task<ActionResult<Movie>> AddCharactersInMovie(int movieId, params int[] ids)
         {
-
             try
             {
-                await _movieService.UpdateCharactersInMovie(movieId, ids);
+                await _movieService.AddCharactersInMovie(movieId, ids);
             }
             catch (Exception ex)
             {
@@ -95,6 +122,12 @@ namespace MovieCharactersAPI.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Update movie
+        /// </summary>
+        /// <param name="movieId"> id of movie </param>
+        /// <param name="updateMovie"> new info for updated movie </param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<ActionResult<Movie>> PutMovie(int movieId, UpdateMovieDTO updateMovie)
         {
