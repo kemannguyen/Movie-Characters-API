@@ -12,7 +12,6 @@ namespace MovieCharactersAPI.Controllers
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [ApiController]
-
     public class FranchiseController : ControllerBase
     {
         private readonly IFranchiseService _franchiseService;
@@ -39,13 +38,13 @@ namespace MovieCharactersAPI.Controllers
         /// </summary>
         /// <param name="Id">Franchise id</param>
         /// <returns>A franchise resource</returns>
-        [HttpGet("Id")]
-        public async Task<ActionResult<FranchiseDTO>> getFranchiseById(int Id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<FranchiseDTO>> getFranchiseById(int id)
         {
             try
             {
                // return await _franchiseService.GetFranchiseById(Id);
-               return Ok(_mapper.Map<FranchiseDTO>(await _franchiseService.GetFranchiseById(Id)));
+               return Ok(_mapper.Map<FranchiseDTO>(await _franchiseService.GetFranchiseById(id)));
             }
             catch (Exception ex)
             {
@@ -76,12 +75,12 @@ namespace MovieCharactersAPI.Controllers
         /// </summary>
         /// <param name="Id">The id of the resource to delete</param>
         /// <returns></returns>
-        [HttpDelete("Id")]
-        public async Task<IActionResult> DeleteFranchise(int Id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteFranchise(int id)
         {
             try
             {
-                await _franchiseService.DeleteFranchise(Id);
+                await _franchiseService.DeleteFranchise(id);
             }
             catch (Exception ex)
             {
@@ -101,7 +100,7 @@ namespace MovieCharactersAPI.Controllers
         /// <param name="id">the id for the resource to update</param>
         /// <param name="franchise">Check if it's same as the one you are updating</param>
         /// <returns></returns>
-        [HttpPut("Id")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> PutFranchises(int id, Franchise franchise)
         {
             if (id != franchise.Id)
@@ -124,13 +123,12 @@ namespace MovieCharactersAPI.Controllers
             return NoContent();
         }
 
-        [HttpPut("id/updateMovies")]
-        public async Task<IActionResult> AdddMovieToFranchase(int Id, params int[] movieIds)
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> AdddMovieToFranchase(int id, params int[] movieIds)
         {
-
             try
             {
-                await _franchiseService.AddMovieToFranchise(Id, movieIds);
+                await _franchiseService.AddMovieToFranchise(id, movieIds);
             }
             catch (Exception ex)
             {

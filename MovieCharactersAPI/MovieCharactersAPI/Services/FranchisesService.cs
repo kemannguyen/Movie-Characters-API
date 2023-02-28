@@ -28,15 +28,17 @@ namespace MovieCharactersAPI.Services
 
             if (franchise == null) 
             {
-                throw new Exception();
+                throw new Exception("franchise not found");
             }
 
             foreach (int movieId in movieIds)
             {
-                var movie = await _context.Movies.FindAsync(movieId);
-                if(movie == null || franchise.Movies.Contains(movie))
+                var movie = await _context.Movies.Include(x => x.Characters).FirstAsync(x => movieId == x.Id);
+                if (franchise.Movies.Any(x => x.Id == movieId))
+                    continue;
+                if(movie == null)
                 {
-                    throw new Exception();
+                    throw new Exception("movie not found");
                 }
                 movies.Add(movie);
             }
