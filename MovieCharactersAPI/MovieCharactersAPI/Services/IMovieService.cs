@@ -14,14 +14,14 @@ namespace MovieCharactersAPI.Services
         /// Finds a movie based on its id
         /// </summary>
         /// <param name="id"> movie id </param>
-        /// <returns> found movie </returns>
+        /// <returns> found movie entity </returns>
         Task<Movie> GetMovieById(int id);
 
         /// <summary>
         /// Add a movie
         /// </summary>
         /// <param name="movie"> Movie object </param>
-        /// <returns></returns>
+        /// <returns> Added movie entity </returns>
         Task<Movie> AddMovie(Movie movie);
 
         /// <summary>
