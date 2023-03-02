@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieCharactersAPI.Context;
+using MovieCharactersAPI.Exceptions;
 using MovieCharactersAPI.Models;
 
 namespace MovieCharactersAPI.Services
@@ -25,7 +26,7 @@ namespace MovieCharactersAPI.Services
             var movie = await _context.Movies.Include(x => x.Franchise).Include(x => x.Characters).FirstOrDefaultAsync(x => x.Id == id);
             if (movie == null)
             {
-                throw new Exception("not found" + id);
+                throw new MovieNotFoundException("Movie not found");
             }
 
             return movie;
@@ -44,7 +45,7 @@ namespace MovieCharactersAPI.Services
             var movie = await _context.Movies.FindAsync(id);
             if (movie == null)
             {
-                throw new Exception("make a custom exception" + id);
+                throw new MovieNotFoundException("Movie not found");
             }
 
             _context.Movies.Remove(movie);
@@ -56,7 +57,7 @@ namespace MovieCharactersAPI.Services
             var foundMovie = await _context.Movies.AnyAsync(x => x.Id == movie.Id);
             if (!foundMovie)
             {
-                throw new Exception("not found" + movie.Id);
+                throw new MovieNotFoundException("Movie not found");
             }
             _context.Entry(movie).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -71,7 +72,7 @@ namespace MovieCharactersAPI.Services
 
             if (foundMovie == null)
             {
-                throw new Exception("franchise not found");
+                throw new FranchiseNotFoundException("franchise not found");
             }
 
             foreach (int characterId in ids)
@@ -82,7 +83,7 @@ namespace MovieCharactersAPI.Services
                     continue;
                 if (character == null)
                 {
-                    throw new Exception("character not found");
+                    throw new CharacterNotFoundException("character not found");
                 }
                 characters.Add(character);
             }
@@ -101,7 +102,7 @@ namespace MovieCharactersAPI.Services
 
             if (foundMovie == null)
             {
-                throw new Exception();
+                throw new MovieNotFoundException("movie not found");
             }
 
             return foundMovie.Characters.ToList();
